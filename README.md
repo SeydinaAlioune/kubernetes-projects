@@ -43,13 +43,12 @@ Use code **MM26BUNCT** with the following bundles to **save flat 60%**
 
 If you Looking for an organized way to learn Kubernetes and prepare for the CKA exam with practice questions? 
 
-> Check out our [Complete CKA Certification Course](https://courses.devopscube.com/p/cka-complete-prep-course-practice-tests). 
+> Check out our [Complete CKA Certification Course](https://courses.devopscube.com/p/certified-kubernetes-administrator-course). 
 
 It includes illustrations, hands-on exercises, real-world examples, and dedicated Discord support. 
 
 > [!NOTE]
->⌛ For a lmited time, use code **DCUBE30** to get 30% OFF today!
-
+>⌛ For a lmited time, use code **FLASH40** to get 40% OFF today!
 
 ## 🖥️ Cluster Setup
 
