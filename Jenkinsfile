@@ -22,13 +22,12 @@ pipeline {
         }
     }
     
-    post {
+   post {
         always {
-            emailext (
-                subject: "Rapport de Sécurité Jenkins : ${currentBuild.currentResult}",
-                body: "Le scan Trivy est terminé. \nStatut du pipeline : ${currentBuild.currentResult}. \n\nConsulte les logs ici : ${env.BUILD_URL}console",
-                to: 'diaoseydina62@gmail.com'
-            )
+            // Utilisation de la commande mail standard au lieu de emailext
+            mail to: 'diaoseydina62@gmail.com',
+                 subject: "Rapport de Sécurité Jenkins : ${currentBuild.currentResult}",
+                 body: "Le scan Trivy est terminé. \nStatut du pipeline : ${currentBuild.currentResult}. \n\nConsulte les logs ici : ${env.BUILD_URL}console"
         }
     }
 }
