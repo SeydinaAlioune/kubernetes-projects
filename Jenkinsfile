@@ -22,12 +22,14 @@ pipeline {
         }
     }
     
-   post {
+  post {
         always {
-            // Utilisation de la commande mail standard au lieu de emailext
-            mail to: 'diaoseydina62@gmail.com',
-                 subject: "Rapport de Sécurité Jenkins : ${currentBuild.currentResult}",
-                 body: "Le scan Trivy est terminé. \nStatut du pipeline : ${currentBuild.currentResult}. \n\nConsulte les logs ici : ${env.BUILD_URL}console"
+            emailext (
+                subject: "Rapport de Sécurité : ${currentBuild.currentResult}",
+                body: "Le scan Trivy est terminé. Résultat : ${currentBuild.currentResult}.\n\nLogs : ${env.BUILD_URL}console",
+                to: "diaoseydina62@gmail.com",
+                // On force l'utilisation des paramètres SMTP définis dans la configuration système
+            )
         }
     }
 }
