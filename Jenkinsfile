@@ -25,7 +25,7 @@ pipeline {
             emailext (
                 subject: "Rapport de Sécurité Jenkins : ${currentBuild.currentResult}",
                 body: "Le scan Trivy est terminé. \nStatut du pipeline : ${currentBuild.currentResult}. \n\nPour voir quelles failles ont été trouvées, consulte les logs ici : ${env.BUILD_URL}console",
-                to: 'ton_adresse@gmail.com' // ⚠️ N'oublie pas de mettre ton adresse mail ici
+                to: 'diaoseydina62@gmail.com' // ⚠️ N'oublie pas de mettre ton adresse mail ici
             )
         }
     }
