@@ -5,14 +5,16 @@ pipeline {
         stage('1. Récupération du Code') {
             steps {
                 checkout scm
-                echo '✅ Code récupéré avec succès depuis kubernetes-projects.'
+                echo '✅ Code récupéré avec succès.'
             }
         }
         
         stage('2. Construction (Image Docker)') {
             steps {
-                // On change le nom de l'image pour correspondre au nouveau projet
-                sh 'docker build -t k8s-app-sec:latest .'
+                // Jenkins entre dans le bon dossier avant de lancer la commande Docker
+                dir('03-java-app-deployment') {
+                    sh 'docker build -t k8s-app-sec:latest .'
+                }
                 echo '✅ Image Docker construite.'
             }
         }
@@ -20,7 +22,7 @@ pipeline {
         stage('3. Scan de Sécurité (Trivy)') {
             steps {
                 echo '🛡️ Lancement du scan avec Trivy...'
-                // On scanne la nouvelle image
+                // Jenkins scanne l'image qu'il vient de construire
                 sh 'docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image --exit-code 1 --severity HIGH,CRITICAL k8s-app-sec:latest'
                 echo '✅ Scan terminé avec succès.'
             }
