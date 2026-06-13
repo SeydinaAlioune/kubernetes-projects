@@ -9,32 +9,24 @@ pipeline {
             }
         }
         
-        stage('2. Construction (Image Docker)') {
+        stage('2. Scan de Sécurité (Trivy sur Kubernetes)') {
             steps {
-                // Jenkins entre dans le bon dossier avant de lancer la commande Docker
-                dir('03-java-app-deployment') {
-                    sh 'docker build -t k8s-app-sec:latest .'
-                }
-                echo '✅ Image Docker construite.'
-            }
-        }
-        
-        stage('3. Scan de Sécurité (Trivy)') {
-            steps {
-                echo '🛡️ Lancement du scan avec Trivy...'
-                // Jenkins scanne l'image qu'il vient de construire
-                sh 'docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image --exit-code 1 --severity HIGH,CRITICAL k8s-app-sec:latest'
-                echo '✅ Scan terminé avec succès.'
+                echo '🛡️ Scan des fichiers .yml avec Trivy...'
+                // Trivy analyse directement le dossier contenant tes fichiers Kubernetes
+                sh 'docker run --rm -v ${WORKSPACE}:/workspace -w /workspace aquasec/trivy config --exit-code 1 ./03-java-app-deployment'
+                echo '✅ Scan terminé.'
             }
         }
     }
     
     post {
-        success {
-            echo '🎉 Pipeline réussi et image sécurisée !'
-        }
-        failure {
-            echo '❌ Le build a échoué (Soit erreur Docker, soit Trivy a trouvé des failles !)'
+        always {
+            // L'envoi automatique de l'e-mail à la fin du build !
+            emailext (
+                subject: "Rapport de Sécurité Jenkins : ${currentBuild.currentResult}",
+                body: "Le scan Trivy est terminé. \nStatut du pipeline : ${currentBuild.currentResult}. \n\nPour voir quelles failles ont été trouvées, consulte les logs ici : ${env.BUILD_URL}console",
+                to: 'ton_adresse@gmail.com' // ⚠️ N'oublie pas de mettre ton adresse mail ici
+            )
         }
     }
 }
